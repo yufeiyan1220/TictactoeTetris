@@ -4,14 +4,9 @@ public class board {
     private int width = 8;
     private int height = 16;
    
-    private Pill currentPill = Pill.randomOne();
-    private Pill nextPill = Pill.randomOne();
+    public Pill currentPill = Pill.randomOne();
+    public Pill nextPill = Pill.randomOne();
 
-
-	public static final int PLAYING = 0;
-	public static final int PAUSE = 1;
-	public static final int GAMEOVER = 2;
-	private int game_state;
 	public int player_camp;
 	public int scores_get;
 	public int scores_lose;
@@ -81,6 +76,8 @@ public class board {
 	}
 	/** calculate the result after landing and calculate the scores */
 	public void destroyConsecutive() {
+		scores_get = 0;
+		scores_lose = 0;
 		Cell[] cells = currentPill.cells;
 		int row_max = Math.max(cells[0].getRow(), cells[1].getRow());
 		int row_min = Math.min(cells[0].getRow(), cells[1].getRow());
@@ -105,21 +102,21 @@ public class board {
 		if(col_max == col_min) {
 			//check min
 			//up
-			while(row_min - move > 0 && wall[row_min - move][col_min] != null && move <= 2) {
+			while(row_min - move >= 0 && wall[row_min - move][col_min] != null && move <= 2) {
 				if(wall[row_min - move][col_min].getType() != type_min) break;
 				up_min++;
 				move++;
 			}
 			move = 1;
 			//left
-			while(col_min - move > 0 && wall[row_min][col_min - move] != null && move <= 2) {
+			while(col_min - move >= 0 && wall[row_min][col_min - move] != null && move <= 2) {
 				if(wall[row_min][col_min - move].getType() != type_min) break;
 				left_min++;
 				move++;
 			}
 			move = 1;
 			//right
-			while(col_min + move > 0 && wall[row_min][col_min + move] != null && move <= 2) {
+			while(col_min + move < width && wall[row_min][col_min + move] != null && move <= 2) {
 				if(wall[row_min][col_min + move].getType() != type_min) break;
 				right_min++;
 				move++;
@@ -133,7 +130,7 @@ public class board {
 			}
 			move = 1;
 			//left
-			while(col_max - move > 0 && wall[row_max][col_max - move] != null && move <= 2) {
+			while(col_max - move >= 0 && wall[row_max][col_max - move] != null && move <= 2) {
 				if(wall[row_max][col_max - move].getType() != type_max) break;
 				left_max++;
 				move++;
@@ -209,14 +206,15 @@ public class board {
 		else {
 			//check min
 			//left
-			while(col_min - move > 0 && wall[row_min][col_min - move] != null && move <= 2) {
+			while(col_min - move >= 0 && wall[row_min][col_min - move] != null && move <= 2) {
 				if(wall[row_min][col_min - move].getType() != type_min) break;
 				left_min++;
 				move++;
 			}
+
 			move = 1;
 			//up
-			while(row_min - move > 0 && wall[row_min - move][col_min] != null && move <= 2) {
+			while(row_min - move >= 0 && wall[row_min - move][col_min] != null && move <= 2) {
 				if(wall[row_min - move][col_min].getType() != type_min) break;
 				up_min++;
 				move++;
@@ -228,6 +226,7 @@ public class board {
 				down_min++;
 				move++;
 			}
+			move = 1;
 			//check max
 			//right
 			while(col_max + move < width && wall[row_max][col_max + move] != null && move <= 2) {
@@ -237,7 +236,7 @@ public class board {
 			}
 			move = 1;
 			//up
-			while(row_max - move > 0 && wall[row_max - move][col_max] != null && move <= 2) {
+			while(row_max - move >= 0 && wall[row_max - move][col_max] != null && move <= 2) {
 				if(wall[row_max - move][col_max].getType() != type_max) break;
 				up_max++;
 				move++;
@@ -309,6 +308,10 @@ public class board {
 				}
 			}
 		}
+		/*
+		System.out.println("left_max, right_max, up_max, down_max " + left_max + "," + right_max + "," + up_max + "," + down_max);
+		System.out.println("left_min, right_min, up_min, down_min " + left_min + "," + right_min + "," + up_min + "," + down_min);
+		System.out.println(this);*/
 	}
 
 	public void nextRound() {
@@ -365,7 +368,7 @@ public class board {
 	}
 
 	/** testing */
-	/*
+
 	public static void main(String[] args) {
 		board bd = new board(0);
 		int i = 0;
@@ -416,6 +419,6 @@ public class board {
 		System.out.println(bd);
 
 	}
-	*/
+
 }
 

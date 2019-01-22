@@ -1,5 +1,7 @@
 package baseboard;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Random;
 /**
@@ -101,6 +103,28 @@ public class Pill {
         //System.out.println(c1_type + "," + c2_type);
         pill.cells[0] = new Cell(0, 3, c1_type);
         pill.cells[1] = new Cell(0, 4, c2_type);
+        BufferedImage O = null;
+        BufferedImage X = null;
+        try {
+            O = ImageIO.read(gameground.class.getResource("O.png"));
+            X = ImageIO.read(gameground.class.getResource("X.png"));
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        if(c1_type == 0) {
+            pill.cells[0].setImage(O);
+        }
+        else {
+            pill.cells[0].setImage(X);
+        }
+        if(c2_type == 0) {
+            pill.cells[1].setImage(O);
+        }
+        else {
+            pill.cells[1].setImage(X);
+        }
 
         return pill;
     }
